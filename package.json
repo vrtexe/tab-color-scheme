@@ -1,0 +1,23 @@
+{
+  "name": "tab-color-scheme",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/vrtexe/tab-color-scheme#readme",
+  "bugs": {
+    "url": "https://github.com/vrtexe/tab-color-scheme/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vrtexe/tab-color-scheme.git"
+  },
+  "license": "MIT",
+  "author": "vrtexe",
+  "type": "module",
+  "main": "manifest.json",
+  "scripts": {
+    "package": "web-ext build"
+  },
+  "devDependencies": {
+    "web-ext": "^10.1.0"
+  }
+}
