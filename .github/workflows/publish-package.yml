@@ -1,0 +1,56 @@
+# This workflow will run tests using node and then publish a package to GitHub Packages when a release is created
+# For more information see: https://docs.github.com/en/actions/publishing-packages/publishing-nodejs-packages
+
+name: Node.js Package
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: GitHub Script
+        uses: actions/github-script@v8
+        with:
+          # The script to run
+          script: |
+            console.log(context)
+            
+              
+  # build:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v6
+  #     - uses: actions/setup-node@v6
+  #       with:
+  #         node-version: 24
+  #     - run: npm ci
+  #     - run: |
+  #            npm version $APP_VERSION --no-git-tag-version --allow-same-version
+  #            git config user.name "github-actions[bot]"
+  #            git config user.email "htmljs+github-actions[bot]@users.noreply.github.com"
+  #            git add package.json package-lock.json
+  #            git commit -m "Release version $APP_VERSION" || true
+  #            git push -u origin HEAD:main
+  #       env:
+  #        APP_VERSION: ${{ github.event.release.tag_name }
+  #     - run: npm test
+
+  # publish-gpr:
+  #   needs: build
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     contents: read
+  #     packages: write
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: actions/setup-node@v4
+  #       with:
+  #         node-version: 20
+  #         registry-url: https://npm.pkg.github.com/
+  #     - run: npm ci
+  #     - run: npm publish
+  #       env:
+  #         NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
