@@ -1,1 +1,1 @@
-# -tab-color-scheme
+# tab-color-scheme
