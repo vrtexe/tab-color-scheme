@@ -27,8 +27,8 @@ jobs:
         uses: actions/github-script@v8
         with:
           script: |
-            import { readFile, readdir } from 'node:fs/promises';
-            import { resolve as resolvePath } from 'node:path';
+            const { readFile, readdir } = await import('node:fs/promises');
+            const { resolve : resolvePath } await import('node:path');
             
             const githubWorkspace = process.env.GITHUB_WORKSPACE;
             const directory = resolvePath(githubWorkspace, 'web-ext-artifacts');
