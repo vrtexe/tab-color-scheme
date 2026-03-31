@@ -15,7 +15,8 @@
   "type": "module",
   "main": "manifest.json",
   "scripts": {
-    "package": "web-ext build"
+    "package": "web-ext build",
+    "publish": "web-ext sign --channel listed"
   },
   "devDependencies": {
     "web-ext": "^10.1.0"
