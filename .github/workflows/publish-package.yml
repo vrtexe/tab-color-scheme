@@ -15,7 +15,7 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: 24
-      - run: npm ci
+      - run: npm ci --verbose
       - env:
           APP_VERSION: ${{github.event.release.name}}
         run: npm run package
