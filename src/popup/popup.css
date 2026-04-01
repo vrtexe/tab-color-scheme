@@ -1,0 +1,295 @@
+/* ============================================================
+   Firefox Proton Design System — Extension Popup
+   Matches the native unified-extensions-panel exactly.
+   Values sourced from Firefox source:
+     - toolkit/themes/shared/design-system/src/panel.css
+     - browser/themes/shared/customizableui/panelUI-shared.css
+     - browser/themes/shared/addons/unified-extensions.css
+   ============================================================ */
+
+:root {
+  /* ---- Arrowpanel tokens (panel.css) ---- */
+  /* Use exact Firefox Proton hex values via light-dark() because
+     system colors (Field/FieldText) resolve differently in web content
+     vs Firefox chrome context. */
+
+  --arrowpanel-background: var(--popup, light-dark(#fff, #42414d));
+  --arrowpanel-color: var(--popup_text, light-dark(#15141a, #fbfbfe));
+  --arrowpanel-border-color: var(--popup_border, light-dark(#cfcfd8, #52525e));
+  --arrowpanel-dimmed: color-mix(in srgb, currentColor 17%, transparent);
+  --arrowpanel-dimmed-further: color-mix(in srgb, currentColor 30%, transparent);
+
+  /* ---- Menuitem geometry (panel.css) ---- */
+  --arrowpanel-menuitem-border-radius: 4px; /* --border-radius-small */
+  --arrowpanel-menuitem-margin-block: 0px;
+  --arrowpanel-menuitem-margin-inline: 8px; /* --dimension-8 */
+  --arrowpanel-menuitem-margin: var(--arrowpanel-menuitem-margin-block) var(--arrowpanel-menuitem-margin-inline);
+  --arrowpanel-menuitem-padding-block: 8px; /* --dimension-8 */
+  --arrowpanel-menuitem-padding-inline: 8px; /* --dimension-8 */
+  --arrowpanel-menuitem-padding: var(--arrowpanel-menuitem-padding-block) var(--arrowpanel-menuitem-padding-inline);
+
+  /* ---- Panel body (panelUI-shared.css) ---- */
+  --panel-subview-body-padding-block: 8px; /* --dimension-8 */
+  --panel-subview-body-padding-inline: 0px;
+
+  /* (separator vars moved above, before focus) */
+
+  /* ---- Panel width: unified extensions uses wide (panelUI-shared.css) ---- */
+  --menu-panel-width-wide: 29em;
+
+  /* ---- Unified extensions item (unified-extensions.css) ---- */
+  --uei-icon-size: 32px;
+
+  /* ---- Separator (panelUI-shared.css) ---- */
+  --panel-separator-color: light-dark(rgba(21, 20, 26, 0.24), rgba(251, 251, 254, 0.24));
+  --panel-separator-padding-vertical: 4px;
+  --panel-separator-padding-horizontal: 8px;
+
+  /* ---- Focus ---- */
+  --focus-outline: 2px solid light-dark(#0060df, #00ddff);
+  --focus-outline-inset: -2px;
+
+  /* ---- Text ---- */
+  --text-color-deemphasized: color-mix(in srgb, currentColor 69%, transparent);
+
+  color-scheme: light dark;
+}
+
+/* ---- Reset ---- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ---- Base (panelUI-shared.css: .cui-widget-panel, #unified-extensions-panel) ---- */
+
+html,
+body {
+  width: var(--menu-panel-width-wide);
+  margin: 0;
+  padding: 0;
+  font: menu;
+  /* color: var(--arrowpanel-color); */
+  background: var(--arrowpanel-background);
+}
+
+/* ---- Panel Container ---- */
+
+.panel-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---- Panel Header (panelUI-shared.css .panel-header) ---- */
+
+.panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-sizing: border-box;
+  padding: var(--arrowpanel-menuitem-margin-inline);
+  /* min-height = back-icon-full-width + 2 * separator-horizontal-padding
+     = (16px + 12px) + (2 * 8px) = 44px */
+  min-height: 44px;
+}
+
+.panel-header-title {
+  flex: auto;
+  font-size: inherit;
+  font-weight: 600;
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* ---- Panel Body (panelUI-shared.css .panel-subview-body) ---- */
+
+.panel-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: var(--panel-subview-body-padding-block) var(--panel-subview-body-padding-inline);
+}
+
+/* ---- Item (panelUI-shared.css .subviewbutton + unified-extensions.css) ---- */
+
+.panel-list-item {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+  margin: var(--arrowpanel-menuitem-margin);
+  padding: var(--arrowpanel-menuitem-padding);
+  border-radius: var(--arrowpanel-menuitem-border-radius);
+  background-color: transparent;
+  color: inherit;
+  cursor: default;
+  user-select: none;
+  -moz-user-select: none;
+  flex-shrink: 0;
+  justify-content: flex-start;
+}
+
+/* unified-extensions.css: items have 2px block margin */
+.panel-list-item + .panel-list-item {
+  margin-block-start: 2px;
+}
+
+.panel-list-item:hover {
+  background-color: var(--arrowpanel-dimmed);
+}
+
+.panel-list-item:hover:active {
+  background-color: var(--arrowpanel-dimmed-further);
+  box-shadow: 0 1px 0 hsla(210, 4%, 10%, 0.03) inset;
+}
+
+.panel-list-item:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-inset);
+}
+
+.panel-list-item.selected {
+  background-color: var(--arrowpanel-dimmed);
+}
+
+/* ---- Icon (unified-extensions.css: 32×32 icon, 6px end margin) ---- */
+
+.panel-list-item-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: var(--uei-icon-size);
+  height: var(--uei-icon-size);
+  margin-inline-end: 6px;
+}
+
+.panel-list-item-icon img,
+.panel-list-item-icon svg .panel-list-item-icon object {
+  width: var(--uei-icon-size);
+  height: var(--uei-icon-size);
+  -moz-context-properties: fill, fill-opacity;
+  fill: currentColor;
+}
+
+/* ---- Content (unified-extensions.css name + message) ---- */
+
+.panel-list-item-content {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  pointer-events: none;
+}
+
+.panel-list-item-label {
+  margin: 0;
+  padding-inline-start: 0.5em;
+  word-break: break-word;
+  text-align: start;
+}
+
+.panel-list-item-description {
+  margin: 0;
+  padding-inline-start: 0.5em;
+  word-break: break-word;
+  color: var(--text-color-deemphasized);
+}
+
+/* ---- Action / Badge ---- */
+
+.panel-list-item-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-inline-start: auto;
+}
+
+.panel-list-item-badge {
+  display: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: light-dark(#0060df, #00ddff);
+}
+
+.panel-list-item-badge.active {
+  display: block;
+}
+
+/* ---- Separator (panelUI-shared.css: panel toolbarseparator) ---- */
+
+.panel-section-separator {
+  /* Use content-box so height: 1px refers to content only,
+     not content+padding (the global border-box reset breaks this). */
+  box-sizing: content-box;
+  border: none;
+  height: 1px;
+  padding: var(--panel-separator-padding-vertical) var(--panel-separator-padding-horizontal);
+  background-clip: content-box;
+  background-color: var(--panel-separator-color);
+}
+
+/* ---- Footer button (panelUI-shared.css .panel-subview-footer-button) ---- */
+
+.panel-footer-button {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  min-height: 24px;
+  margin: var(--arrowpanel-menuitem-margin);
+  /* footer has extra bottom margin matching inline margin */
+  margin-bottom: var(--arrowpanel-menuitem-margin-inline);
+  padding: var(--arrowpanel-menuitem-padding);
+  border-radius: var(--arrowpanel-menuitem-border-radius);
+  background-color: transparent;
+  color: inherit;
+  cursor: default;
+  user-select: none;
+  -moz-user-select: none;
+  flex-shrink: 0;
+  justify-content: flex-start;
+}
+
+.panel-footer-button:hover {
+  background-color: var(--arrowpanel-dimmed);
+}
+
+.panel-footer-button:hover:active {
+  background-color: var(--arrowpanel-dimmed-further);
+  box-shadow: 0 1px 0 hsla(210, 4%, 10%, 0.03) inset;
+}
+
+.panel-footer-button:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-inset);
+}
+
+.panel-footer-button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  -moz-context-properties: fill;
+  fill: currentColor;
+}
+
+.panel-footer-button-icon svg {
+  width: 16px;
+  height: 16px;
+}
+
+.panel-footer-button-label {
+  text-align: start;
+  padding-inline-start: 0.5em;
+}

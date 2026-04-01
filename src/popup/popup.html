@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tab Color Scheme</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="panel-container">
+      <!-- panel-header -->
+      <div class="panel-header">
+        <h1 class="panel-header-title">Tab Color Scheme</h1>
+      </div>
+
+      <!-- toolbarseparator after header -->
+      <div class="panel-section-separator"></div>
+
+      <!-- panel-subview-body -->
+      <div class="panel-body">
+        <div class="panel-list-item" data-scheme="auto">
+          <div class="panel-list-item-icon">
+            <img src="/icons/ThemeIcon.svg" alt="" />
+          </div>
+          <div class="panel-list-item-content">
+            <span class="panel-list-item-label">Auto</span>
+            <span class="panel-list-item-description">
+              Follow system preference
+            </span>
+          </div>
+          <div class="panel-list-item-action">
+            <span class="panel-list-item-badge" id="badge-auto"></span>
+          </div>
+        </div>
+
+        <div class="panel-list-item" data-scheme="light">
+          <div class="panel-list-item-icon">
+            <img src="/icons/ThemeIconLight.svg" alt="" />
+          </div>
+          <div class="panel-list-item-content">
+            <span class="panel-list-item-label">Light</span>
+            <span class="panel-list-item-description">
+              Force light color scheme
+            </span>
+          </div>
+          <div class="panel-list-item-action">
+            <span class="panel-list-item-badge" id="badge-light"></span>
+          </div>
+        </div>
+
+        <div class="panel-list-item" data-scheme="dark">
+          <div class="panel-list-item-icon">
+            <img src="/icons/ThemeIconDark.svg" alt="" />
+          </div>
+          <div class="panel-list-item-content">
+            <span class="panel-list-item-label">Dark</span>
+            <span class="panel-list-item-description">
+              Force dark color scheme
+            </span>
+          </div>
+          <div class="panel-list-item-action">
+            <span class="panel-list-item-badge" id="badge-dark"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- toolbarseparator before footer -->
+      <div class="panel-section-separator"></div>
+
+      <!-- panel-subview-footer-button -->
+      <div class="panel-footer-button" id="manage-settings">
+        <span class="panel-footer-button-icon">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 16 16"
+            width="16"
+            height="16"
+            fill="currentColor">
+            <path
+              d="M15 8.5c0 .3-.2.5-.5.5H13c-.1.7-.3 1.3-.7 1.8l1.1 1.1c.2.2.2.5 0 .7l-.7.7c-.2.2-.5.2-.7 0l-1.1-1.1c-.5.4-1.1.6-1.8.7V14.5c0 .3-.2.5-.5.5h-1c-.3 0-.5-.2-.5-.5V13c-.7-.1-1.3-.3-1.8-.7l-1.1 1.1c-.2.2-.5.2-.7 0l-.7-.7c-.2-.2-.2-.5 0-.7L4.7 11C4.3 10.4 4.1 9.8 4 9.1H2.5c-.3 0-.5-.2-.5-.5v-1c0-.3.2-.5.5-.5H4c.1-.7.3-1.3.7-1.8L3.6 4.2c-.2-.2-.2-.5 0-.7l.7-.7c.2-.2.5-.2.7 0l1.1 1.1C6.6 3.5 7.2 3.3 7.9 3.1V1.5c0-.3.2-.5.5-.5h1c.3 0 .5.2.5.5V3c.7.1 1.3.3 1.8.7l1.1-1.1c.2-.2.5-.2.7 0l.7.7c.2.2.2.5 0 .7L13.1 5.1c.4.5.6 1.1.7 1.8h1.7c.3 0 .5.2.5.5v1zM8.5 6C7.1 6 6 7.1 6 8.5S7.1 11 8.5 11 11 9.9 11 8.5 9.9 6 8.5 6z" />
+          </svg>
+        </span>
+        <span class="panel-footer-button-label">Manage Extensions</span>
+      </div>
+    </div>
+
+    <script src="popup.js" type="module"></script>
+  </body>
+</html>

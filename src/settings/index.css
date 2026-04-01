@@ -1,0 +1,155 @@
+/* ============================================================
+   Firefox about:preferences — Inline Options Page
+   Renders inside about:addons extension options panel.
+   Matches: moz-card.css, preferences.css .setting-chooser-item
+   ============================================================ */
+
+:root {
+  --background-color-box: light-dark(#fff, #42414d);
+  --text-color: light-dark(#15141a, #fbfbfe);
+  --text-color-deemphasized: light-dark(#5b5b66, #cfcfd8);
+  --border-color: light-dark(#cfcfd8, #52525e);
+  --border-width: 1px;
+
+  --color-accent-primary: light-dark(#0060df, #00ddff);
+  --focus-outline: 2px solid var(--color-accent-primary);
+
+    --card-box-shadow: light-dark(
+    0 1px 4px rgba(12, 12, 13, 0.1),
+    0 1px 4px rgba(12, 12, 13, 0.4)
+  );
+
+  --space-xxsmall: 4px;
+  --space-xsmall: 8px;
+  --space-small: 12px;
+  --space-medium: 16px;
+  --space-large: 20px;
+
+  --border-radius-small: 4px;
+  --border-radius-medium: 8px;
+
+  --font-size-root: 15px;
+  --font-weight-heading: 600;
+
+  color-scheme: light dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  margin: 0;
+  padding: var(--space-large);
+  background: transparent;
+  color: var(--text-color);
+  font: message-box;
+  font-size: var(--font-size-root);
+}
+
+.heading {
+  font-size: var(--font-size-root);
+  font-weight: var(--font-weight-heading);
+  margin: 0 0 var(--space-small);
+}
+
+.description {
+  color: var(--text-color-deemphasized);
+  font-size: var(--font-size-root);
+  margin: 0 0 var(--space-large);
+}
+
+/* ---- Chooser row (setting-chooser) ---- */
+
+.setting-chooser {
+  display: flex;
+  gap: var(--space-xsmall);
+}
+
+/* ---- Chooser item (setting-chooser-item) ---- */
+
+.setting-chooser-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: var(--space-small);
+  border-radius: var(--border-radius-medium);
+  user-select: none;
+  border: 2px solid var(--border-color);
+}
+
+.setting-chooser-item:hover {
+  background-color: color-mix(in srgb, currentColor 7%, transparent);
+}
+
+.setting-chooser-item:has(input:checked) {
+  border-color: var(--color-accent-primary);
+}
+
+.setting-chooser-item:has(input:focus-visible) {
+  outline: var(--focus-outline);
+  outline-offset: -2px;
+}
+
+.setting-chooser-item input[type="radio"] {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---- Preview image (setting-chooser-item::part(image)) ---- */
+
+.chooser-image-wrapper {
+  margin-block-start: var(--space-xxsmall);
+  margin-block-end: var(--space-small);
+}
+
+.chooser-image {
+  display: block;
+  width: 54px;
+  height: auto;
+  border-radius: var(--border-radius-small);
+  border: var(--border-width) solid var(--border-color);
+  box-shadow: var(--card-box-shadow);
+}
+
+/* ---- SVG fills ---- */
+
+.preview-frame {
+  fill: light-dark(#fff, #42414d);
+}
+
+.preview-titlebar,
+.preview-titlebar-mask {
+  fill: light-dark(#e0e0e6, #38374a);
+}
+
+/* ---- Label ---- */
+
+.chooser-label {
+  font-size: var(--font-size-root);
+  text-align: center;
+}
+
+/* ---- Checkbox option ---- */
+
+.checkbox-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xsmall);
+  margin-block-start: var(--space-large);
+  cursor: pointer;
+  user-select: none;
+  font-size: var(--font-size-root);
+}
+
+.checkbox-option input[type="checkbox"] {
+  margin: 0;
+  accent-color: var(--color-accent-primary);
+}

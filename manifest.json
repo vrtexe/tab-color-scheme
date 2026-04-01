@@ -25,10 +25,16 @@
       "32": "icons/ThemeIcon.svg",
       "48": "icons/ThemeIcon.svg"
     },
+    "default_popup": "src/popup/popup.html",
     "default_title": "Toggle Color Scheme"
   },
-  "permissions": ["storage", "browserSettings", "tabs"],
+  "options_ui": {
+    "page": "src/settings/index.html"
+  },
+  "permissions": ["storage", "browserSettings", "tabs", "theme"],
   "background": {
-    "scripts": ["main.js"]
+    "scripts": ["src/main.js"],
+    "service_worker": "src/main.js",
+    "type": "module"
   }
 }

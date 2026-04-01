@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tab Color Scheme — Settings</title>
+    <link rel="stylesheet" href="index.css" />
+    <script src="index.js" type="module"></script>
+  </head>
+  <body>
+
+    <h1 class="heading">Website Appearance</h1>
+    <p class="description">
+      Choose the global color scheme override for website content.
+    </p>
+
+    <div class="setting-chooser" role="radiogroup" aria-label="Website appearance">
+
+        <!-- Auto -->
+        <label class="setting-chooser-item">
+          <input type="radio" name="globalTheme" value="auto" />
+          <div class="chooser-image-wrapper">
+            <svg class="chooser-image" viewBox="0 0 90 70" xmlns="http://www.w3.org/2000/svg">
+              <rect class="preview-frame" x="1" y="1" width="88" height="68" rx="6" />
+              <rect class="preview-titlebar" x="1" y="1" width="88" height="14" rx="6" />
+              <rect class="preview-titlebar-mask" x="1" y="9" width="88" height="6" />
+              <clipPath id="clip-left"><rect x="1" y="15" width="44" height="54" /></clipPath>
+              <g clip-path="url(#clip-left)">
+                <rect x="1" y="15" width="88" height="54" fill="#f0f0f4" />
+                <rect x="9" y="23" width="30" height="4" rx="2" fill="#cfcfd8" />
+                <rect x="9" y="31" width="72" height="3" rx="1.5" fill="#e0e0e6" />
+                <rect x="9" y="38" width="60" height="3" rx="1.5" fill="#e0e0e6" />
+                <rect x="9" y="45" width="50" height="3" rx="1.5" fill="#e0e0e6" />
+              </g>
+              <clipPath id="clip-right"><rect x="45" y="15" width="44" height="54" /></clipPath>
+              <g clip-path="url(#clip-right)">
+                <rect x="1" y="15" width="88" height="54" fill="#1c1b22" />
+                <rect x="9" y="23" width="30" height="4" rx="2" fill="#52525e" />
+                <rect x="9" y="31" width="72" height="3" rx="1.5" fill="#3a3944" />
+                <rect x="9" y="38" width="60" height="3" rx="1.5" fill="#3a3944" />
+                <rect x="9" y="45" width="50" height="3" rx="1.5" fill="#3a3944" />
+              </g>
+              <line x1="45" y1="15" x2="45" y2="69" stroke="#8f8f9d" stroke-width="0.5" />
+            </svg>
+          </div>
+          <span class="chooser-label">Automatic</span>
+        </label>
+
+        <!-- Light -->
+        <label class="setting-chooser-item">
+          <input type="radio" name="globalTheme" value="light" />
+          <div class="chooser-image-wrapper">
+            <svg class="chooser-image" viewBox="0 0 90 70" xmlns="http://www.w3.org/2000/svg">
+              <rect class="preview-frame" x="1" y="1" width="88" height="68" rx="6" />
+              <rect class="preview-titlebar" x="1" y="1" width="88" height="14" rx="6" />
+              <rect class="preview-titlebar-mask" x="1" y="9" width="88" height="6" />
+              <rect x="1" y="15" width="88" height="54" fill="#f0f0f4" />
+              <rect x="9" y="23" width="30" height="4" rx="2" fill="#cfcfd8" />
+              <rect x="9" y="31" width="72" height="3" rx="1.5" fill="#e0e0e6" />
+              <rect x="9" y="38" width="60" height="3" rx="1.5" fill="#e0e0e6" />
+              <rect x="9" y="45" width="50" height="3" rx="1.5" fill="#e0e0e6" />
+            </svg>
+          </div>
+          <span class="chooser-label">Light</span>
+        </label>
+
+        <!-- Dark -->
+        <label class="setting-chooser-item">
+          <input type="radio" name="globalTheme" value="dark" />
+          <div class="chooser-image-wrapper">
+            <svg class="chooser-image" viewBox="0 0 90 70" xmlns="http://www.w3.org/2000/svg">
+              <rect x="1" y="1" width="88" height="68" rx="6" fill="#1c1b22" />
+              <rect fill="#2b2a33" x="1" y="1" width="88" height="14" rx="6" />
+              <rect fill="#2b2a33" x="1" y="9" width="88" height="6" />
+              <rect x="1" y="15" width="88" height="54" fill="#1c1b22" />
+              <rect x="9" y="23" width="30" height="4" rx="2" fill="#52525e" />
+              <rect x="9" y="31" width="72" height="3" rx="1.5" fill="#3a3944" />
+              <rect x="9" y="38" width="60" height="3" rx="1.5" fill="#3a3944" />
+              <rect x="9" y="45" width="50" height="3" rx="1.5" fill="#3a3944" />
+            </svg>
+          </div>
+          <span class="chooser-label">Dark</span>
+        </label>
+
+    </div>
+
+    <label class="checkbox-option">
+      <input type="checkbox" id="closePopupOnSelect" />
+      Close popup on select
+    </label>
+
+  </body>
+</html>

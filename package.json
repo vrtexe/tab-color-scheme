@@ -2,6 +2,7 @@
   "name": "tab-color-scheme",
   "version": "1.0.0",
   "description": "",
+  "type": "module",
   "homepage": "https://github.com/vrtexe/tab-color-scheme#readme",
   "bugs": {
     "url": "https://github.com/vrtexe/tab-color-scheme/issues"
@@ -12,9 +13,9 @@
   },
   "license": "MIT",
   "author": "vrtexe",
-  "type": "module",
   "main": "manifest.json",
   "scripts": {
+    "dev": "web-ext run",
     "package": "web-ext build",
     "publish": "web-ext sign --channel listed"
   },
