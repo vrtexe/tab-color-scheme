@@ -14,9 +14,23 @@ import {
 
 /** @type {string|null|undefined} */
 let appliedHost;
-let latestRun = 0;
+let running = false;
+let pending = false;
 
-const apply = () => applyActiveTabColorScheme().catch(console.error);
+/** Runs one apply at a time and folds events that arrive meanwhile into one follow-up run. */
+async function apply() {
+  pending = true;
+  if (running) return;
+  running = true;
+  try {
+    while (pending) {
+      pending = false;
+      await applyActiveTabColorScheme().catch(console.error);
+    }
+  } finally {
+    running = false;
+  }
+}
 
 browser.tabs.onActivated.addListener(apply);
 browser.tabs.onUpdated.addListener(
@@ -31,7 +45,6 @@ apply();
 
 /** Only writer of the browser-wide override: the active tab's site scheme, else the global default, else Auto. */
 async function applyActiveTabColorScheme() {
-  const run = ++latestRun;
   const [tab] = await browser.tabs.query({ active: true, lastFocusedWindow: true });
   // No tab when the focused window is a private window the extension may not access.
   if (!tab) return;
@@ -41,7 +54,6 @@ async function applyActiveTabColorScheme() {
   const globalScheme = await storageManager(GLOBAL_COLOR_SCHEME_KEY).get();
   const colorScheme = colorSchemeValueOf(siteScheme) || colorSchemeValueOf(globalScheme) || ColorScheme.None;
   const { levelOfControl } = await browser.browserSettings.overrideContentColorScheme.get({});
-  if (run !== latestRun) return;
   if (levelOfControl === "not_controllable" || levelOfControl === "controlled_by_other_extensions") {
     console.error(`Could not set the color scheme to ${colorScheme}: ${levelOfControl}`);
     return;
