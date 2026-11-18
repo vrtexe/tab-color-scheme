@@ -2,7 +2,7 @@
 'use strict';
 
 export const CLEAR_POPUP_ON_SELECT_KEY = "closePopupOnSelect";
-
+export const GLOBAL_COLOR_SCHEME_KEY = "globalColorScheme";
 
 /** @typedef {typeof ColorScheme[keyof typeof ColorScheme]} ColorScheme */
 export const ColorScheme = Object.freeze({
@@ -10,9 +10,6 @@ export const ColorScheme = Object.freeze({
   Light: 'light',
   None: 'auto',
 });
-
-/** @type {readonly ColorScheme[]} */
-export const ColorSchemeValues = Object.freeze(Object.values(ColorScheme));
 
 /** @type {Readonly<Record<string, ColorScheme>>} */
 // @ts-ignore
@@ -36,6 +33,13 @@ export const ColorSchemeIcon = Object.freeze({
   [ColorScheme.Dark]: 'ThemeIconDark.svg',
   [ColorScheme.Light]: 'ThemeIconLight.svg',
   [ColorScheme.None]: 'ThemeIcon.svg',
+});
+
+/** @type {Record<ColorScheme, string>} */
+export const ColorSchemeLabel = Object.freeze({
+  [ColorScheme.Dark]: 'Dark',
+  [ColorScheme.Light]: 'Light',
+  [ColorScheme.None]: 'Auto',
 });
 
 /**
@@ -107,13 +111,6 @@ export function parseUrl(url) {
  * @returns {string|null}
  */
 export function extractHost(url) {
-  try {
-    return url?.host.startsWith('www.') ? url.host.slice(4) : url?.host || null;
-  } catch (e) {
-    return null;
-  }
-}
-
-export function getActiveTab() {
-  return browser.tabs.query({ active: true });
+  if (url?.protocol !== 'http:' && url?.protocol !== 'https:') return null;
+  return (url.host.startsWith('www.') ? url.host.slice(4) : url.host) || null;
 }

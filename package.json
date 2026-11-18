@@ -1,6 +1,6 @@
 {
   "name": "tab-color-scheme",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "",
   "type": "module",
   "homepage": "https://github.com/vrtexe/tab-color-scheme#readme",
@@ -17,9 +17,12 @@
   "scripts": {
     "dev": "web-ext run",
     "package": "web-ext build",
-    "publish": "web-ext sign --channel listed"
+    "publish": "web-ext sign --channel listed",
+    "test": "node --test test/*.test.js",
+    "test:e2e": "node --test --test-concurrency=1 test/e2e/"
   },
   "devDependencies": {
+    "selenium-webdriver": "^4.27.0",
     "web-ext": "^10.1.0"
   }
 }
