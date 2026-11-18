@@ -73,7 +73,6 @@ body {
   margin: 0;
   padding: 0;
   font: menu;
-  /* color: var(--arrowpanel-color); */
   background: var(--arrowpanel-background);
 }
 
@@ -119,6 +118,13 @@ body {
 
 /* ---- Item (panelUI-shared.css .subviewbutton + unified-extensions.css) ---- */
 
+.panel-list-item,
+.panel-footer-button {
+  border: none;
+  font: inherit;
+  text-align: start;
+}
+
 .panel-list-item {
   appearance: none;
   display: flex;
@@ -159,6 +165,11 @@ body {
   background-color: var(--arrowpanel-dimmed);
 }
 
+.panel-list-item:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
 /* ---- Icon (unified-extensions.css: 32×32 icon, 6px end margin) ---- */
 
 .panel-list-item-icon {
@@ -171,8 +182,7 @@ body {
   margin-inline-end: 6px;
 }
 
-.panel-list-item-icon img,
-.panel-list-item-icon svg .panel-list-item-icon object {
+.panel-list-item-icon img {
   width: var(--uei-icon-size);
   height: var(--uei-icon-size);
   -moz-context-properties: fill, fill-opacity;

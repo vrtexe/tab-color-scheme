@@ -9,73 +9,46 @@ import {
   CLEAR_POPUP_ON_SELECT_KEY,
 } from "../shared.js";
 
-/**
- * @param {HTMLElement} item
- * @returns {HTMLElement|null}
- */
-function queryBadgeElement(item) {
-  return item.querySelector(".panel-list-item-badge");
-}
-
 async function initPopup() {
-  const items = queryListItems();
-  const [tab] = await getActiveTab();
+  const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
   const host = extractTabHost(tab);
 
   /** @type {import("../shared.js").LocalStorageManager<string>} */
   const clearPopupStorage = storageManager(CLEAR_POPUP_ON_SELECT_KEY);
-
   const clearPopup = (await clearPopupStorage.get()) === "true";
 
   const colorSchemeStorage = host ? colorSchemeStorageManager(host) : null;
-  const currentScheme = (await colorSchemeStorage?.get?.()) || ColorScheme.None;
+  const currentScheme = colorSchemeStorage ? colorSchemeValueOf(await colorSchemeStorage.get()) || ColorScheme.None : null;
 
-  for (const item of items) {
-    const scheme = colorSchemeValueOf(item.dataset.scheme);
-    const badge = queryBadgeElement(item);
-
-    if (scheme === currentScheme) {
-      item.classList.add("selected");
-      item.setAttribute("aria-selected", "true");
-      if (badge) badge.classList.add("active");
+  for (const item of queryListItems()) {
+    const scheme = colorSchemeValueOf(item.dataset.scheme) || ColorScheme.None;
+    markSelected(item, scheme === currentScheme);
+    if (!colorSchemeStorage) {
+      item.disabled = true;
+      continue;
     }
 
-    item.addEventListener("click", () => {
-      selectScheme(scheme, host);
-      clearPopup && window.close();
+    item.addEventListener("click", async () => {
+      await (scheme === ColorScheme.None ? colorSchemeStorage.remove() : colorSchemeStorage.set(scheme));
+      for (const other of queryListItems()) markSelected(other, other === item);
+      if (clearPopup) window.close();
     });
   }
 
-  // Settings link
-  const settingsItem = document.getElementById("manage-settings");
-  if (settingsItem) {
-    settingsItem.addEventListener("click", () => {
-      browser.runtime.openOptionsPage();
-      window.close();
-    });
-  }
+  document.getElementById("manage-settings")?.addEventListener("click", async () => {
+    await browser.runtime.openOptionsPage();
+    window.close();
+  });
 }
 
 /**
- * @param {ColorScheme|undefined} colorScheme
- * @param {string|undefined|null} host
+ * @param {HTMLButtonElement} item
+ * @param {boolean} selected
  */
-async function selectScheme(colorScheme, host) {
-  if (host) {
-    await browser.runtime.sendMessage({ colorScheme, host });
-  }
-
-  // Update UI
-  const items = queryListItems();
-  for (const item of items) {
-    const badge = queryBadgeElement(item);
-    const itemColorScheme = colorSchemeValueOf(item.dataset.scheme);
-    const isSelected = itemColorScheme === colorScheme;
-
-    item.classList.toggle("selected", isSelected);
-    item.setAttribute("aria-selected", String(isSelected));
-    if (badge) badge.classList.toggle("active", isSelected);
-  }
+function markSelected(item, selected) {
+  item.classList.toggle("selected", selected);
+  item.setAttribute("aria-pressed", String(selected));
+  item.querySelector(".panel-list-item-badge")?.classList.toggle("active", selected);
 }
 
 async function updateThemeColors() {
@@ -96,15 +69,8 @@ async function updateThemeColors() {
   }
 }
 
-async function getActiveTab() {
-  return await browser.tabs.query({
-    active: true,
-    currentWindow: true,
-  });
-}
-
 /**
- * @returns {NodeListOf<HTMLElement>}
+ * @returns {NodeListOf<HTMLButtonElement>}
  */
 function queryListItems() {
   return document.querySelectorAll(".panel-list-item[data-scheme]");

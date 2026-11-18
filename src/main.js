@@ -4,125 +4,68 @@
 import {
   ColorScheme,
   ColorSchemeIcon,
+  ColorSchemeLabel,
+  GLOBAL_COLOR_SCHEME_KEY,
   colorSchemeStorageManager,
   colorSchemeValueOf,
   extractTabHost,
+  storageManager,
 } from "./shared.js";
 
-async function main() {
-  try {
-    await browser.browserSettings.overrideContentColorScheme.onChange.addListener(handleColorSchemeUpdate);
+/** @type {string|null|undefined} */
+let appliedHost;
+let latestRun = 0;
 
-    browser.tabs.onActivated.addListener(async (activeTab) => {
-      const tab = await browser.tabs.get(activeTab.tabId);
-      await onTabChange(tab);
-    });
+const apply = () => applyActiveTabColorScheme().catch(console.error);
 
-    browser.tabs.onUpdated.addListener((_tabId, _changeInfo, tab) => {
-      onTabChange(tab);
-    });
+browser.tabs.onActivated.addListener(apply);
+browser.tabs.onUpdated.addListener(
+  (_tabId, _changeInfo, tab) => {
+    if (tab.active && extractTabHost(tab) !== appliedHost) apply();
+  },
+  { properties: ["url"] },
+);
+browser.windows.onFocusChanged.addListener(apply);
+browser.storage.onChanged.addListener(apply);
+apply();
 
-    browser.runtime.onMessage.addListener(({ colorScheme, host }) => {
-      if (!colorScheme || !host) {
-        return;
-      }
+/** Only writer of the browser-wide override: the active tab's site scheme, else the global default, else Auto. */
+async function applyActiveTabColorScheme() {
+  const run = ++latestRun;
+  const [tab] = await browser.tabs.query({ active: true, lastFocusedWindow: true });
+  // No tab when the focused window is a private window the extension may not access.
+  if (!tab) return;
 
-      updateColorScheme({
-        value: colorSchemeValueOf(colorScheme) || ColorScheme.None,
-        host,
-      });
-    });
-  } catch (e) {
-    console.error(e);
+  const host = extractTabHost(tab);
+  const siteScheme = host ? await colorSchemeStorageManager(host).get() : undefined;
+  const globalScheme = await storageManager(GLOBAL_COLOR_SCHEME_KEY).get();
+  const colorScheme = colorSchemeValueOf(siteScheme) || colorSchemeValueOf(globalScheme) || ColorScheme.None;
+  const { levelOfControl } = await browser.browserSettings.overrideContentColorScheme.get({});
+  if (run !== latestRun) return;
+  if (levelOfControl === "not_controllable" || levelOfControl === "controlled_by_other_extensions") {
+    console.error(`Could not set the color scheme to ${colorScheme}: ${levelOfControl}`);
+    return;
   }
-}
 
-/**
- * @param {{value: ColorScheme, host: string}} param0
- */
-async function updateColorScheme({ value, host }) {
-  const colorScheme = colorSchemeValueOf(value) || ColorScheme.None;
-  const colorSchemeStorage = colorSchemeStorageManager(host);
-
-  if (colorScheme !== ColorScheme.None) {
-    colorSchemeStorage.set(colorScheme);
+  if (colorScheme === ColorScheme.None) {
+    await browser.browserSettings.overrideContentColorScheme.clear({});
   } else {
-    colorSchemeStorage.remove();
+    await browser.browserSettings.overrideContentColorScheme.set({ value: colorScheme });
   }
 
-  setColorScheme(colorScheme);
+  appliedHost = host;
+  setBadge(colorScheme);
 }
 
 /**
  * @param {ColorScheme} colorScheme
  */
 function setBadge(colorScheme) {
-  browser.action.setTitle({
-    title: `Set color scheme to ${ColorSchemeIcon[colorScheme]}`,
-  });
-  // browser.action.setIcon({});
+  browser.action.setTitle({ title: `Color scheme: ${ColorSchemeLabel[colorScheme]}` });
   browser.action.setIcon({
     path: {
-      16: `icons/${ColorSchemeIcon[colorScheme]}`,
-      32: `icons/${ColorSchemeIcon[colorScheme]}`,
+      16: `/icons/${ColorSchemeIcon[colorScheme]}`,
+      32: `/icons/${ColorSchemeIcon[colorScheme]}`,
     },
   });
 }
-
-// const cachedStorageManagers = new Map();
-// const colorSchemeStorage = cachedStorageManagers.get(host)
-//   ? colorSchemeStorageManager(host)
-//   : (() => {
-//       const n = colorSchemeStorageManager(host);
-//       cachedStorageManagers.set(host, n);
-//       return n;
-//     })();
-// theme.colors
-
-/**
- * @param {browser.tabs.Tab} tab
- */
-async function onTabChange(tab) {
-  const host = extractTabHost(tab);
-  if (!host) return;
-
-  const colorSchemeStorage = colorSchemeStorageManager(host);
-
-  const value = await colorSchemeStorage.get();
-  const colorScheme = colorSchemeValueOf(value) || ColorScheme.None;
-
-  if ((await getColorScheme()) === colorScheme) {
-    return;
-  }
-
-  setColorScheme(colorScheme);
-}
-
-/**
- *
- * @param {{value: ColorScheme}} param0
- */
-function handleColorSchemeUpdate({ value }) {
-  setBadge(value);
-}
-
-/**
- * @param {ColorScheme} colorScheme
- */
-function setColorScheme(colorScheme) {
-  if (colorScheme === ColorScheme.None) {
-    browser.browserSettings.overrideContentColorScheme.clear({});
-    return;
-  }
-
-  browser.browserSettings.overrideContentColorScheme.set({
-    value: colorScheme,
-  });
-}
-
-async function getColorScheme() {
-  const result = await browser.browserSettings.overrideContentColorScheme.get({});
-  return colorSchemeValueOf(result.value) || ColorScheme.None;
-}
-
-main();
