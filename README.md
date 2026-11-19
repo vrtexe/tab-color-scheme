@@ -6,7 +6,7 @@
 
 **Light or dark, chosen per site and remembered.**
 
-A Firefox extension that sets the color scheme websites see, based on the site in the active tab.
+A Firefox extension for per-site dark mode and light mode: it sets the color scheme websites see (`prefers-color-scheme`) based on the site in the active tab.
 
 [![Firefox Add-on](https://img.shields.io/amo/v/tab-color-scheme?logo=firefoxbrowser&logoColor=white&label=Firefox%20Add-on&color=FF7139)](https://addons.mozilla.org/en-US/firefox/addon/tab-color-scheme/)
 [![Users](https://img.shields.io/amo/users/tab-color-scheme?color=20123A)](https://addons.mozilla.org/en-US/firefox/addon/tab-color-scheme/)

@@ -1,7 +1,16 @@
 {
   "name": "tab-color-scheme",
   "version": "1.2.0",
-  "description": "",
+  "description": "Firefox extension that remembers a light or dark color scheme for each website",
+  "keywords": [
+    "firefox",
+    "firefox-extension",
+    "webextension",
+    "dark-mode",
+    "light-mode",
+    "color-scheme",
+    "prefers-color-scheme"
+  ],
   "type": "module",
   "homepage": "https://github.com/vrtexe/tab-color-scheme#readme",
   "bugs": {
