@@ -251,3 +251,6 @@ dist
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode,intellij+all
 
 web-ext-artifacts
+
+### macOS ###
+.DS_Store
